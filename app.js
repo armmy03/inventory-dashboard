@@ -50,3 +50,5 @@ document.querySelector('#prevPage').addEventListener('click', () => { if (curren
 document.querySelector('#nextPage').addEventListener('click', () => { currentPage += 1; render(); });
 render();
 syncGoogleSheet();
+// ตรวจข้อมูลล่าสุดจาก Google Sheets ทุก 1 นาที โดยไม่ต้องรีเฟรชหน้าเว็บ
+setInterval(syncGoogleSheet, 60_000);
