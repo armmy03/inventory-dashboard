@@ -14,15 +14,15 @@
       </nav>
 
       <section class="stat-grid" aria-label="สรุปข้อมูล">
-        <article class="stat-card accent"><span>อุปกรณ์ทั้งหมด</span><strong id="totalStat">—</strong><small>รายการในทะเบียน</small></article>
-        <article class="stat-card"><span>จำนวนตึก</span><strong id="buildingStat">—</strong><small>พื้นที่ที่มีอุปกรณ์</small></article>
-        <article class="stat-card"><span>จำนวนแผนก</span><strong id="departmentStat">—</strong><small>หน่วยงานที่ดูแล</small></article>
-        <article class="stat-card"><span>รุ่นอุปกรณ์</span><strong id="modelStat">—</strong><small>รุ่นที่แตกต่างกัน</small></article>
+        <article class="stat-card accent"><span>อุปกรณ์ทั้งหมด</span><strong id="totalStat">—</strong></article>
+        <article class="stat-card"><span>จำนวนตึก</span><strong id="buildingStat">—</strong></article>
+        <article class="stat-card"><span>จำนวนแผนก</span><strong id="departmentStat">—</strong></article>
+        <article class="stat-card"><span>รุ่นอุปกรณ์</span><strong id="modelStat">—</strong></article>
       </section>
 
       <section class="dashboard-grid">
         <article class="dashboard-card building-card">
-          <div class="card-heading"><div><p class="eyebrow">การกระจายตัว</p><h2>จำนวนอุปกรณ์ตามตึก</h2></div><span class="card-icon">⌁</span></div>
+          <div class="card-heading"><div><h2>จำนวนอุปกรณ์ตามตึก</h2></div><span class="card-icon">⌁</span></div>
           <div class="chart-layout">
             <div class="donut-wrap">
               <svg class="donut-chart" id="buildingChart" viewBox="0 0 120 120" role="img" aria-label="สัดส่วนอุปกรณ์ตามตึก"></svg>
@@ -32,7 +32,7 @@
           </div>
         </article>
         <article class="dashboard-card department-summary-card">
-          <div class="card-heading"><div><p class="eyebrow">ภาพรวมหน่วยงาน</p><h2>แผนกที่มีอุปกรณ์มากที่สุด</h2></div><span class="card-icon">◒</span></div>
+          <div class="card-heading"><div><h2>แผนกที่มีอุปกรณ์มากที่สุด</h2></div><span class="card-icon">◒</span></div>
           <div class="department-list" id="departmentList"></div>
           <div hidden id="inkList"></div>
         </article>
