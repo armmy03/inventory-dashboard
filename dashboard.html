@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>แดชบอร์ดทะเบียนปริ้นเตอร์</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="site-nav" aria-label="เมนูหลัก">
+        <a class="active" href="dashboard.html">แดชบอร์ด</a>
+        <a href="index.html">ทะเบียนปริ้นเตอร์</a>
+      </nav>
+
+      <section class="stat-grid" aria-label="สรุปข้อมูล">
+        <article class="stat-card accent"><span>อุปกรณ์ทั้งหมด</span><strong id="totalStat">—</strong><small>รายการในทะเบียน</small></article>
+        <article class="stat-card"><span>จำนวนตึก</span><strong id="buildingStat">—</strong><small>พื้นที่ที่มีอุปกรณ์</small></article>
+        <article class="stat-card"><span>จำนวนแผนก</span><strong id="departmentStat">—</strong><small>หน่วยงานที่ดูแล</small></article>
+        <article class="stat-card"><span>รุ่นอุปกรณ์</span><strong id="modelStat">—</strong><small>รุ่นที่แตกต่างกัน</small></article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="dashboard-card building-card">
+          <div class="card-heading"><div><p class="eyebrow">การกระจายตัว</p><h2>จำนวนอุปกรณ์ตามตึก</h2></div><span class="card-icon">⌁</span></div>
+          <div class="chart-layout">
+            <div class="donut-wrap">
+              <svg class="donut-chart" id="buildingChart" viewBox="0 0 120 120" role="img" aria-label="สัดส่วนอุปกรณ์ตามตึก"></svg>
+              <div class="donut-center"><strong id="chartTotal">—</strong><span>รายการ</span></div>
+            </div>
+            <div class="chart-legend" id="buildingLegend"></div>
+          </div>
+        </article>
+        <article class="dashboard-card">
+          <div class="card-heading"><div><p class="eyebrow">วัสดุสิ้นเปลือง</p><h2>หมึกที่ใช้งานมากที่สุด</h2></div><span class="card-icon">◒</span></div>
+          <div class="ink-list" id="inkList"></div>
+        </article>
+      </section>
+
+      <section class="dashboard-card department-card">
+        <div class="card-heading"><div><p class="eyebrow">ภาพรวมหน่วยงาน</p><h2>แผนกที่มีอุปกรณ์มากที่สุด</h2></div><a class="text-link" href="index.html">ดูรายการทั้งหมด →</a></div>
+        <div class="department-list" id="departmentList"></div>
+      </section>
+
+      <section class="dashboard-card model-card">
+        <div class="card-heading">
+          <div><p class="eyebrow">สรุปตามรุ่น</p><h2>จำนวนอุปกรณ์แต่ละรุ่น</h2><p class="card-description">รวมเครื่องพิมพ์ สแกนเนอร์ และเครื่องพิมพ์สติกเกอร์</p></div>
+        </div>
+        <div class="model-table-wrap">
+          <table class="model-table">
+            <thead><tr><th>รุ่น-ยี่ห้อ</th><th>ประเภท/หมึก</th><th>จำนวน</th></tr></thead>
+            <tbody id="modelList"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

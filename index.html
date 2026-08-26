@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ทะเบียนอุปกรณ์สำนักงาน</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="site-nav" aria-label="เมนูหลัก">
+        <a href="dashboard.html">แดชบอร์ด</a>
+        <a class="active" href="index.html">ทะเบียนปริ้นเตอร์</a>
+      </nav>
+      <header class="hero">
+        <div>
+          <p class="eyebrow">สำนักงานผู้ป่วยนอก</p>
+          <h1>ทะเบียนปริ้นเตอร์ทั้งหมด</h1>
+          <p class="intro">ติดตามเครื่องพิมพ์และสแกนเนอร์ พร้อมข้อมูลหมึก ตำแหน่ง และครุภัณฑ์</p>
+          <p class="sync-status" id="syncStatus">กำลังเชื่อมต่อข้อมูลจาก Google Sheets…</p>
+        </div>
+        <div class="summary" aria-label="สรุปรายการ">
+          <span>จำนวนรายการ</span>
+          <strong id="totalCount">0</strong>
+        </div>
+      </header>
+
+      <section class="controls" aria-label="ค้นหาและกรองข้อมูล">
+        <label class="search-field">
+          <span>ค้นหาทุกหัวข้อ</span>
+          <input id="searchInput" type="search" placeholder="เช่น กรอกคำที่จะค้นหา" />
+        </label>
+        <label>
+          <span>ตึก</span>
+          <select id="buildingFilter"><option value="">ทุกตึก</option></select>
+        </label>
+        <label>
+          <span>ชั้น</span>
+          <select id="floorFilter"><option value="">ทุกชั้น</option></select>
+        </label>
+        <label>
+          <span>แผนก</span>
+          <select id="departmentFilter"><option value="">ทุกแผนก</option></select>
+        </label>
+        <button id="clearFilters" type="button">ล้างตัวกรอง</button>
+      </section>
+
+      <section class="table-card">
+        <div class="table-heading">
+          <div>
+            <h2>รายการอุปกรณ์</h2>
+            <p id="resultText">กำลังแสดงรายการ</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ตึก</th><th>ชั้น</th><th>แผนก</th><th>รุ่น-ยี่ห้อ</th><th>หมึก</th><th>ตำแหน่ง</th><th>ครุภัณฑ์/ID</th><th>หมายเหตุ</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryBody"></tbody>
+          </table>
+        </div>
+        <p class="empty-state" id="emptyState" hidden>ไม่พบรายการที่ตรงกับเงื่อนไข</p>
+        <nav class="pagination" id="pagination" aria-label="เปลี่ยนหน้ารายการ">
+          <button class="page-button" id="prevPage" type="button">ก่อนหน้า</button>
+          <span id="pageLabel"></span>
+          <button class="page-button" id="nextPage" type="button">ถัดไป</button>
+        </nav>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
