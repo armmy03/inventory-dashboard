@@ -12,7 +12,7 @@ const columns = ['unit','floor','department','model','ink','location','asset','n
 const pageSize = 25;
 let currentPage = 1;
 let displayedItems = [];
-const sheetUrl = 'https://docs.google.com/spreadsheets/d/1b_WvVvFsKd32XSO8w-_DKCOXCZVShKfF1G_umh9XCKo/gviz/tq?gid=345504780&tqx=out:json';
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/1b_WvVvFsKd32XSO8w-_DKCOXCZVShKfF1G_umh9XCKo/gviz/tq?gid=1255614734&tqx=out:json';
 const syncStatus = document.querySelector('#syncStatus');
 
 function options(select, values) { values.forEach(value => select.insertAdjacentHTML('beforeend', `<option>${value}</option>`)); }
