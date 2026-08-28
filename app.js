@@ -35,7 +35,7 @@ function render() {
   displayedItems = pageItems;
   body.innerHTML = pageItems.map(item => `<tr>${columns.map(key => `<td class="${key === 'asset' ? 'asset' : ''}">${key === 'ink' ? `<span class="pill">${item[key] || '-'}</span>` : (item[key] || '—')}</td>`).join('')}</tr>`).join('');
   total.textContent = items.length;
-  result.textContent = shown.length ? `แสดง ${start + 1}–${Math.min(start + pageSize, shown.length)} จาก ${shown.length} รายการ` : 'แสดง 0 รายการ';
+  result.textContent = `จำนวนรายการ ${shown.length}`;
   empty.hidden = shown.length !== 0;
   document.querySelector('#pagination').hidden = shown.length === 0;
   document.querySelector('#pageLabel').textContent = `หน้า ${currentPage} จาก ${totalPages}`;
