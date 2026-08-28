@@ -24,38 +24,28 @@
         </div>
       </header>
 
-      <section class="controls" aria-label="ค้นหาและกรองข้อมูล">
-        <label class="search-field">
-          <span>ค้นหาทุกหัวข้อ</span>
-          <input id="searchInput" type="search" placeholder="เช่น กรอกคำที่จะค้นหา" />
-        </label>
-        <label>
-          <span>ตึก</span>
-          <select id="buildingFilter"><option value="">ทุกตึก</option></select>
-        </label>
-        <label>
-          <span>ชั้น</span>
-          <select id="floorFilter"><option value="">ทุกชั้น</option></select>
-        </label>
-        <label>
-          <span>แผนก</span>
-          <select id="departmentFilter"><option value="">ทุกแผนก</option></select>
-        </label>
-        <button id="clearFilters" type="button">ล้างตัวกรอง</button>
-      </section>
-
       <section class="table-card">
         <div class="table-heading">
           <div>
             <h2>รายการอุปกรณ์</h2>
             <p id="resultText">กำลังแสดงรายการ</p>
           </div>
+          <div class="table-search">
+            <input id="searchInput" type="search" placeholder="ค้นหาทุกหัวข้อ" aria-label="ค้นหาทุกหัวข้อ" />
+            <button id="clearFilters" type="button">ล้างตัวกรอง</button>
+          </div>
         </div>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>ตึก</th><th>ชั้น</th><th>แผนก</th><th>รุ่น-ยี่ห้อ</th><th>หมึก</th><th>ตำแหน่ง</th><th>ครุภัณฑ์/ID</th><th>หมายเหตุ</th>
+                <th><span>ตึก</span><select id="buildingFilter" aria-label="กรองตึก"><option value="">ทุกตึก</option></select></th>
+                <th><span>ชั้น</span><select id="floorFilter" aria-label="กรองชั้น"><option value="">ทุกชั้น</option></select></th>
+                <th><span>แผนก</span><select id="departmentFilter" aria-label="กรองแผนก"><option value="">ทุกแผนก</option></select></th>
+                <th><span>รุ่น-ยี่ห้อ</span><select id="modelFilter" aria-label="กรองรุ่น-ยี่ห้อ"><option value="">ทุกรุ่น</option></select></th>
+                <th>หมึก</th><th>ตำแหน่ง</th>
+                <th><span>ครุภัณฑ์/ID</span><input id="assetFilter" type="search" placeholder="ค้นหา ID" aria-label="กรองครุภัณฑ์หรือ ID" /></th>
+                <th>หมายเหตุ</th>
               </tr>
             </thead>
             <tbody id="inventoryBody"></tbody>
@@ -72,3 +62,4 @@
     <script src="app.js"></script>
   </body>
 </html>
+
