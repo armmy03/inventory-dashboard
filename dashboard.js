@@ -1,4 +1,4 @@
-const sheetUrl = 'https://docs.google.com/spreadsheets/d/1b_WvVvFsKd32XSO8w-_DKCOXCZVShKfF1G_umh9XCKo/gviz/tq?gid=345504780&tqx=out:json';
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/1b_WvVvFsKd32XSO8w-_DKCOXCZVShKfF1G_umh9XCKo/gviz/tq?gid=1255614734&tqx=out:json';
 const columns = ['unit','floor','department','model','ink','location','asset','note'];
 const aliases = { unit:['หน่วยงาน','ตึก','อาคาร'], floor:['ชั้น'], department:['แผนก'], model:['รุ่น-ยี่ห้อ','รุ่น','ยี่ห้อ'], ink:['หมึก'], location:['ตำแหน่ง'], asset:['ครุภัณฑ์/id','ครุภัณฑ์','id'], note:['หมายเหตุ'] };
 const status = document.querySelector('#syncStatus');
