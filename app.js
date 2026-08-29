@@ -1,5 +1,16 @@
 let items = [];
 
+function setupSidebar() {
+  const toggle = document.querySelector('#navToggle');
+  if (!toggle) return;
+  let collapsed = window.matchMedia('(max-width: 760px)').matches;
+  try { collapsed = localStorage.getItem('printer-sidebar-collapsed') === 'true' || (localStorage.getItem('printer-sidebar-collapsed') === null && collapsed); } catch {}
+  const update = () => { document.body.classList.toggle('sidebar-collapsed', collapsed); toggle.setAttribute('aria-expanded', String(!collapsed)); toggle.setAttribute('aria-label', collapsed ? 'ขยายเมนู' : 'ยุบเมนู'); };
+  toggle.addEventListener('click', () => { collapsed = !collapsed; try { localStorage.setItem('printer-sidebar-collapsed', String(collapsed)); } catch {} update(); });
+  update();
+}
+setupSidebar();
+
 const body = document.querySelector('#inventoryBody');
 const search = document.querySelector('#searchInput');
 const departmentFilter = document.querySelector('#departmentFilter');

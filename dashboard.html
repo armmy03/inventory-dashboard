@@ -8,19 +8,23 @@
   </head>
   <body>
     <main class="page-shell">
-      <nav class="site-nav" aria-label="เมนูหลัก">
-        <a class="active" href="dashboard.html">แดชบอร์ด</a>
-        <a href="index.html">ทะเบียนปริ้นเตอร์</a>
+      <nav class="site-nav" id="siteNav" aria-label="เมนูหลัก">
+        <div class="nav-links">
+          <a class="active" href="dashboard.html"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z"/></svg></span><span class="nav-label">แดชบอร์ด</span></a>
+          <a href="index.html"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8V3h10v5H7Zm10 7h2v-4H5v4h2v-2h10v2Zm-2-2H9v5h6v-5Zm2 7H7v-3H3V9h18v8h-4v3ZM6 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg></span><span class="nav-label">ทะเบียนปริ้นเตอร์</span></a>
+        </div>
       </nav>
 
       <section class="stat-grid" aria-label="สรุปข้อมูล">
         <article class="stat-card accent"><span>อุปกรณ์ทั้งหมด</span><strong id="totalStat">—</strong></article>
         <article class="stat-card sticker-stat"><span>เครื่องปริ้นสติ๊กเกอร์</span><strong id="stickerStat">—</strong></article>
-        <article class="stat-card"><span>จำนวนตึก</span><strong id="buildingStat">—</strong></article>
-        <article class="stat-card"><span>จำนวนแผนก</span><strong id="departmentStat">—</strong></article>
-        <article class="stat-card"><span>รุ่นอุปกรณ์</span><strong id="modelStat">—</strong></article>
+        <article class="stat-card rental-stat"><span>จำนวนเครื่องเช่า</span><strong id="rentalStat">—</strong></article>
+        <article class="stat-card hospital-stat"><span>เครื่อง รพ.</span><strong id="modelStat">—</strong></article>
+        <article class="stat-card ink-stat"><span>ประเภทหมึก</span><strong id="inkTypeStat">—</strong></article>
       </section>
 
+      <section class="dashboard-layout">
+        <div class="dashboard-left">
       <section class="dashboard-grid">
         <article class="dashboard-card building-card">
           <div class="card-heading"><div><h2>จำนวนอุปกรณ์ตามตึก</h2></div><span class="card-icon">⌁</span></div>
@@ -35,9 +39,17 @@
         <article class="dashboard-card department-summary-card">
           <div class="card-heading"><div><h2>แผนกที่มีอุปกรณ์มากที่สุด</h2></div><span class="card-icon">◒</span></div>
           <div class="department-list" id="departmentList"></div>
-          <div hidden id="inkList"></div>
         </article>
       </section>
+
+      <section class="dashboard-card ink-dashboard-card">
+        <div class="card-heading">
+          <div><p class="eyebrow">สรุปตามหมึก</p><h2>จำนวนอุปกรณ์ตามประเภทหมึก</h2><p class="card-description">เปรียบเทียบจำนวนเครื่องที่ใช้หมึกแต่ละประเภท</p></div>
+          <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.7c-.7 1.2-6.3 7.1-6.3 11.4a6.3 6.3 0 0 0 12.6 0C18.3 9.8 12.7 3.9 12 2.7Zm0 15.6a4.2 4.2 0 0 1-4.2-4.2c0-2.2 2.5-5.8 4.2-8 1.7 2.2 4.2 5.8 4.2 8a4.2 4.2 0 0 1-4.2 4.2Z"/></svg></span>
+        </div>
+        <div class="ink-dashboard" id="inkList"></div>
+      </section>
+        </div>
 
       <section class="dashboard-card model-card">
         <div class="card-heading">
@@ -50,8 +62,8 @@
           </table>
         </div>
       </section>
+      </section>
     </main>
     <script src="dashboard.js"></script>
   </body>
 </html>
-
