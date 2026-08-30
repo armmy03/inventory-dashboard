@@ -1,5 +1,4 @@
-@font-face { font-family:"Printer Noto Sans Thai"; font-style:normal; font-weight:100 900; font-display:swap; src:url("https://cdn.jsdelivr.net/gh/lazywasabi/thai-web-fonts@7/fonts/NotoSansThai/var/NotoSansThai%5Bwdth,wght%5D.woff2") format("woff2"); }
-:root { --ink:#17372f; --muted:#658079; --line:#dce8df; --forest:#176a53; --green:#dff2e5; --surface:#fff; --app-font:"Printer Noto Sans Thai",sans-serif; }
+:root { --ink:#17372f; --muted:#658079; --line:#dce8df; --forest:#176a53; --green:#dff2e5; --surface:#fff; --app-font:"Google Sans Flex","Google Sans","Google Sans Text",sans-serif; }
 @view-transition { navigation: auto; }
 ::view-transition-old(root) { animation:.28s ease-in both fade-out; }
 ::view-transition-new(root) { animation:.5s cubic-bezier(.22,.8,.22,1) both slide-in; }
