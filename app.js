@@ -22,6 +22,7 @@ const empty = document.querySelector('#emptyState');
 const result = document.querySelector('#resultText');
 const total = document.querySelector('#totalCount');
 const columns = ['unit','floor','department','model','serial','ink','asset','location'];
+const columnLabels = { unit:'ตึก', floor:'ชั้น', department:'แผนก', model:'รุ่น-ยี่ห้อ', serial:'Serial Number (S/N)', ink:'หมึก', asset:'ครุภัณฑ์/ID', location:'ตำแหน่ง' };
 const pageSize = 25;
 let currentPage = 1;
 let displayedItems = [];
@@ -49,7 +50,7 @@ function render() {
   const start = (currentPage - 1) * pageSize;
   const pageItems = shown.slice(start, start + pageSize);
   displayedItems = pageItems;
-  body.innerHTML = pageItems.map(item => `<tr>${columns.map(key => `<td class="${key === 'asset' ? 'asset' : ''}">${key === 'ink' ? `<span class="pill">${item[key] || '-'}</span>` : (item[key] || '—')}</td>`).join('')}<td><button class="edit-row-button" type="button" data-row="${item._rowNumber}" aria-label="ย้ายอุปกรณ์" title="ย้ายอุปกรณ์"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.5 3.5-2.2 0v5.2h5.2V8.5L22 12l-3.5 3.5v-2.2h-5.2v5.2h2.2L12 22l-3.5-3.5h2.2v-5.2H5.5v2.2L2 12l3.5-3.5v2.2h5.2V5.5H8.5L12 2Z"/></svg></button></td></tr>`).join('');
+  body.innerHTML = pageItems.map(item => `<tr>${columns.map(key => `<td class="${key === 'asset' ? 'asset' : ''}" data-label="${columnLabels[key]}">${key === 'ink' ? `<span class="pill">${item[key] || '-'}</span>` : (item[key] || '—')}</td>`).join('')}<td class="row-action" data-label="ย้าย"><button class="edit-row-button" type="button" data-row="${item._rowNumber}" aria-label="ย้ายอุปกรณ์" title="ย้ายอุปกรณ์"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.5 3.5-2.2 0v5.2h5.2V8.5L22 12l-3.5 3.5v-2.2h-5.2v5.2h2.2L12 22l-3.5-3.5h2.2v-5.2H5.5v2.2L2 12l3.5-3.5v2.2h5.2V5.5H8.5L12 2Z"/></svg></button></td></tr>`).join('');
   total.textContent = items.length;
   result.textContent = `จำนวนรายการ ${shown.length}`;
   empty.hidden = shown.length !== 0;
