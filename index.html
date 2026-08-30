@@ -41,7 +41,7 @@
           <table>
             <colgroup>
               <col class="col-building" /><col class="col-floor" /><col class="col-department" /><col class="col-model" />
-              <col class="col-serial" /><col class="col-ink" /><col class="col-asset" /><col class="col-location" /><col class="col-note" />
+              <col class="col-serial" /><col class="col-ink" /><col class="col-asset" /><col class="col-location" /><col class="col-actions" />
             </colgroup>
             <thead>
               <tr>
@@ -53,7 +53,7 @@
                 <th>หมึก</th>
                 <th><span>ครุภัณฑ์/ID</span><input id="assetFilter" type="search" placeholder="ค้นหา ID" aria-label="กรองครุภัณฑ์หรือ ID" /></th>
                 <th>ตำแหน่ง</th>
-                <th>หมายเหตุ</th>
+                <th>จัดการ</th>
               </tr>
             </thead>
             <tbody id="inventoryBody"></tbody>
@@ -67,6 +67,28 @@
         </nav>
       </section>
     </main>
-    <script src="app.js?v=20260830-sn3"></script>
+    <dialog class="edit-dialog" id="editDialog">
+      <form id="editForm">
+        <div class="edit-dialog-heading">
+          <div><p class="eyebrow">ย้ายอุปกรณ์</p><h2>ข้อมูลการย้าย</h2></div>
+          <button class="dialog-close" id="closeEdit" type="button" aria-label="ปิด">×</button>
+        </div>
+        <input id="editRowNumber" type="hidden" />
+        <div class="edit-grid">
+          <label>ตึก<input id="editUnit" name="unit" list="unitSuggestions" autocomplete="off" required /></label>
+          <label>ชั้น<input id="editFloor" name="floor" list="floorSuggestions" autocomplete="off" /></label>
+          <label>แผนก<input id="editDepartment" name="department" list="departmentSuggestions" autocomplete="off" required /></label>
+          <label>รุ่น-ยี่ห้อ<input id="editModel" name="model" readonly /></label>
+          <label>Serial Number (S/N)<input id="editSerial" name="serial" readonly /></label>
+          <label>หมึก<input id="editInk" name="ink" readonly /></label>
+          <label>ครุภัณฑ์/ID<input id="editAsset" name="asset" readonly /></label>
+          <label>ตำแหน่ง<input id="editLocation" name="location" list="locationSuggestions" autocomplete="off" /></label>
+        </div>
+        <datalist id="unitSuggestions"></datalist><datalist id="floorSuggestions"></datalist><datalist id="departmentSuggestions"></datalist><datalist id="modelSuggestions"></datalist><datalist id="inkSuggestions"></datalist><datalist id="locationSuggestions"></datalist>
+        <p class="edit-message" id="editMessage" aria-live="polite"></p>
+        <div class="edit-actions"><button class="outline-button" id="cancelEdit" type="button">ยกเลิก</button><button id="saveEdit" type="submit">บันทึกการย้าย</button></div>
+      </form>
+    </dialog>
+  <script src="app.js?v=20260830-preview-move2"></script>
   </body>
 </html>
