@@ -7,15 +7,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,100..900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260830-google-sans1" />
+    <link rel="stylesheet" href="styles.css?v=20260901-full-sidebar1" />
   </head>
   <body class="is-loading">
     <main class="page-shell">
       <nav class="site-nav" id="siteNav" aria-label="เมนูหลัก">
+        <div class="nav-brand"><span class="nav-brand-mark">PR</span><span class="nav-brand-copy"><strong>Printer</strong><small>Registration</small></span></div>
+        <p class="nav-section-label">เมนูหลัก</p>
         <div class="nav-links">
-          <a href="dashboard.html"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z"/></svg></span><span class="nav-label">แดชบอร์ด</span></a>
-          <a class="active" href="index.html"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8V3h10v5H7Zm10 7h2v-4H5v4h2v-2h10v2Zm-2-2H9v5h6v-5Zm2 7H7v-3H3V9h18v8h-4v3ZM6 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg></span><span class="nav-label">ทะเบียนปริ้นเตอร์</span></a>
+          <a href="dashboard.html?v=20260901-full-sidebar3"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z"/></svg></span><span class="nav-label">แดชบอร์ด</span></a>
+          <a class="active" href="index.html?v=20260901-full-sidebar3"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8V3h10v5H7Zm10 7h2v-4H5v4h2v-2h10v2Zm-2-2H9v5h6v-5Zm2 7H7v-3H3V9h18v8h-4v3ZM6 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg></span><span class="nav-label">ทะเบียนปริ้นเตอร์</span></a>
         </div>
+        <div class="nav-footer"><p class="nav-section-label">จัดการข้อมูล</p><button class="nav-action" id="openAddPrinter" type="button" aria-label="เพิ่มข้อมูลปริ้นเตอร์" title="เพิ่มข้อมูลปริ้นเตอร์"><span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z"/></svg></span><span class="nav-label">เพิ่มข้อมูลปริ้นเตอร์</span></button></div>
       </nav>
       <header class="hero">
         <div>
@@ -92,6 +95,27 @@
         <div class="edit-actions"><button class="outline-button" id="cancelEdit" type="button">ยกเลิก</button><button id="saveEdit" type="submit">บันทึกการย้าย</button></div>
       </form>
     </dialog>
-  <script src="app.js?v=20260831-spinner1"></script>
+    <dialog class="edit-dialog add-printer-dialog" id="addPrinterDialog">
+      <form id="addPrinterForm">
+        <div class="edit-dialog-heading">
+          <div><p class="eyebrow">เพิ่มรายการใหม่</p><h2>เพิ่มข้อมูลปริ้นเตอร์</h2><p>กรอกข้อมูลให้ครบก่อนบันทึกลง Google Sheets</p></div>
+          <button class="dialog-close" id="closeAddPrinter" type="button" aria-label="ปิด">×</button>
+        </div>
+        <div class="edit-grid">
+          <label>ตึก<select id="addUnit" name="unit" required><option value="">เลือกตึก</option></select></label>
+          <label>ชั้น<select id="addFloor" name="floor" required disabled><option value="">เลือกตึกก่อน</option></select></label>
+          <label>แผนก<select id="addDepartment" name="department" required disabled><option value="">เลือกตึกก่อน</option></select></label>
+          <label>รุ่น-ยี่ห้อ<input id="addModel" name="model" list="addModelSuggestions" required /></label>
+          <label>Serial Number (S/N)<input id="addSerial" name="serial" /></label>
+          <label>หมึก<input id="addInk" name="ink" list="addInkSuggestions" required /></label>
+          <label>ครุภัณฑ์/ID<input id="addAsset" name="asset" /></label>
+          <label>ตำแหน่ง<input id="addLocation" name="location" list="addLocationSuggestions" /></label>
+        </div>
+        <datalist id="addModelSuggestions"></datalist><datalist id="addInkSuggestions"></datalist><datalist id="addLocationSuggestions"></datalist>
+        <p class="edit-message" id="addPrinterMessage" role="status"></p>
+        <div class="edit-actions"><button class="outline-button" id="cancelAddPrinter" type="button">ยกเลิก</button><button id="saveAddPrinter" type="submit">เพิ่มข้อมูล</button></div>
+      </form>
+    </dialog>
+  <script src="app.js?v=20260901-add-printer1"></script>
   </body>
 </html>

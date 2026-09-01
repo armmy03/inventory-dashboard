@@ -9,9 +9,66 @@ function setupSidebar() {
   update();
 }
 setupSidebar();
-const columns = ['unit','floor','department','model','ink','location','asset','note'];
-const aliases = { unit:['หน่วยงาน','ตึก','อาคาร'], floor:['ชั้น'], department:['แผนก'], model:['รุ่น-ยี่ห้อ','รุ่น','ยี่ห้อ'], ink:['หมึก'], location:['ตำแหน่ง'], asset:['ครุภัณฑ์/id','ครุภัณฑ์','id'], note:['หมายเหตุ'] };
+const columns = ['unit','floor','department','model','serial','ink','asset','location'];
+const aliases = { unit:['หน่วยงาน','ตึก','อาคาร'], floor:['ชั้น'], department:['แผนก'], model:['รุ่น-ยี่ห้อ','รุ่น','ยี่ห้อ'], serial:['serial number (s/n)','serial number','serial','s/n','sn'], ink:['หมึก'], asset:['ครุภัณฑ์/id','ครุภัณฑ์','id'], location:['ตำแหน่ง'] };
 const status = document.querySelector('#syncStatus');
+const addPrinterDialog = document.querySelector('#addPrinterDialog');
+const addPrinterForm = document.querySelector('#addPrinterForm');
+const addPrinterMessage = document.querySelector('#addPrinterMessage');
+const addFieldIds = { unit:'addUnit', floor:'addFloor', department:'addDepartment', model:'addModel', serial:'addSerial', ink:'addInk', asset:'addAsset', location:'addLocation' };
+let dashboardItems = [];
+
+function uniqueValues(items, key) { return [...new Set(items.map(item => item[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'th', { numeric:true })); }
+function setSelectOptions(select, values, placeholder, selected = '') {
+  select.replaceChildren(Object.assign(document.createElement('option'), { value:'', textContent:placeholder }), ...values.map(value => Object.assign(document.createElement('option'), { value, textContent:value })));
+  if (values.includes(selected)) select.value = selected;
+}
+function setDatalistOptions(id, values) { document.querySelector(`#${id}`).replaceChildren(...values.map(value => Object.assign(document.createElement('option'), { value }))); }
+function refreshAddDependentOptions(changed = 'unit') {
+  const unitSelect = document.querySelector('#addUnit');
+  const floorSelect = document.querySelector('#addFloor');
+  const departmentSelect = document.querySelector('#addDepartment');
+  if (changed === 'initial') setSelectOptions(unitSelect, uniqueValues(dashboardItems, 'unit'), 'เลือกตึก', unitSelect.value);
+  const selectedUnit = unitSelect.value;
+  const unitItems = selectedUnit ? dashboardItems.filter(item => item.unit === selectedUnit) : [];
+  const previousFloor = floorSelect.value;
+  const floors = uniqueValues(unitItems, 'floor');
+  setSelectOptions(floorSelect, floors, selectedUnit ? 'เลือกชั้น' : 'เลือกตึกก่อน', changed === 'unit' ? '' : previousFloor);
+  floorSelect.disabled = !selectedUnit;
+  const selectedFloor = floorSelect.value;
+  const scopedItems = selectedFloor ? unitItems.filter(item => item.floor === selectedFloor) : unitItems;
+  const previousDepartment = departmentSelect.value;
+  setSelectOptions(departmentSelect, uniqueValues(scopedItems, 'department'), selectedUnit ? 'เลือกแผนก' : 'เลือกตึกก่อน', changed === 'unit' || changed === 'floor' ? '' : previousDepartment);
+  departmentSelect.disabled = !selectedUnit;
+  const selectedDepartment = departmentSelect.value;
+  const detailItems = selectedDepartment ? scopedItems.filter(item => item.department === selectedDepartment) : scopedItems;
+  setDatalistOptions('addModelSuggestions', uniqueValues(detailItems, 'model'));
+  setDatalistOptions('addInkSuggestions', uniqueValues(detailItems, 'ink'));
+  setDatalistOptions('addLocationSuggestions', uniqueValues(detailItems, 'location'));
+}
+function closeAddPrinterDialog() { addPrinterDialog.close(); addPrinterMessage.textContent = ''; addPrinterMessage.classList.remove('error'); }
+document.querySelector('#addUnit').addEventListener('change', () => refreshAddDependentOptions('unit'));
+document.querySelector('#addFloor').addEventListener('change', () => refreshAddDependentOptions('floor'));
+document.querySelector('#addDepartment').addEventListener('change', () => refreshAddDependentOptions('department'));
+document.querySelector('#openAddPrinter').addEventListener('click', () => { addPrinterForm.reset(); refreshAddDependentOptions('initial'); addPrinterMessage.textContent = ''; addPrinterDialog.showModal(); requestAnimationFrame(() => document.querySelector('#addUnit').focus()); });
+document.querySelector('#closeAddPrinter').addEventListener('click', closeAddPrinterDialog);
+document.querySelector('#cancelAddPrinter').addEventListener('click', closeAddPrinterDialog);
+addPrinterDialog.addEventListener('click', event => { if (event.target === addPrinterDialog) closeAddPrinterDialog(); });
+addPrinterForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  const saveButton = document.querySelector('#saveAddPrinter');
+  const values = Object.fromEntries(Object.entries(addFieldIds).map(([key, id]) => [key, document.querySelector(`#${id}`).value.trim()]));
+  saveButton.disabled = true; saveButton.textContent = 'กำลังเพิ่ม…'; addPrinterMessage.classList.remove('error'); addPrinterMessage.textContent = '';
+  try {
+    await fetch(sheetUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({ action:'add', values }) });
+    addPrinterMessage.textContent = 'เพิ่มข้อมูลแล้ว กำลังโหลดข้อมูลล่าสุด…';
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    await syncGoogleSheet();
+    closeAddPrinterDialog();
+  } catch {
+    addPrinterMessage.textContent = 'เพิ่มข้อมูลไม่สำเร็จ กรุณาตรวจการเชื่อมต่อ Google Apps Script'; addPrinterMessage.classList.add('error');
+  } finally { saveButton.disabled = false; saveButton.textContent = 'เพิ่มข้อมูล'; }
+});
 
 function setLoading(isLoading) {
   document.body.classList.toggle('is-loading', isLoading);
@@ -33,6 +90,8 @@ async function syncGoogleSheet() {
   setLoading(true);
   try {
     const items = await loadGoogleSheet();
+    dashboardItems = items;
+    refreshAddDependentOptions('initial');
     render(items);
     updateHospitalCount(items);
     if (status) {
