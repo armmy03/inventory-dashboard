@@ -83,9 +83,9 @@
         </div>
         <input id="editRowNumber" type="hidden" />
         <div class="edit-grid">
-          <label>ตึก<input id="editUnit" name="unit" list="unitSuggestions" autocomplete="off" required /></label>
-          <label>ชั้น<input id="editFloor" name="floor" list="floorSuggestions" autocomplete="off" /></label>
-          <label>แผนก<input id="editDepartment" name="department" list="departmentSuggestions" autocomplete="off" required /></label>
+          <label>ตึก<select id="editUnit" name="unit" required><option value="">เลือกตึก</option></select></label>
+          <label>ชั้น<select id="editFloor" name="floor" required disabled><option value="">เลือกตึกก่อน</option></select></label>
+          <label>แผนก<select id="editDepartment" name="department" required disabled><option value="">เลือกตึกก่อน</option></select></label>
           <label>รุ่น-ยี่ห้อ<input id="editModel" name="model" readonly /></label>
           <label>Serial Number (S/N)<input id="editSerial" name="serial" readonly /></label>
           <label>หมึก<input id="editInk" name="ink" readonly /></label>
