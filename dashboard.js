@@ -54,9 +54,9 @@ function countMatchingPrinters(source, values) {
   })).length;
 }
 async function confirmPrinterWasAdded(previousMatches, values) {
-  for (let attempt = 0; attempt < 6; attempt += 1) {
-    await new Promise(resolve => setTimeout(resolve, 1200));
-    await syncGoogleSheet();
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    await syncGoogleSheet(false);
     if (countMatchingPrinters(dashboardItems, values) > previousMatches) return true;
   }
   return false;
@@ -76,11 +76,15 @@ addPrinterForm.addEventListener('submit', async event => {
   saveButton.disabled = true; saveButton.textContent = 'กำลังเพิ่ม…'; addPrinterMessage.classList.remove('error'); addPrinterMessage.textContent = '';
   try {
     await fetch(sheetUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({ action:'add', values }) });
-    addPrinterMessage.textContent = 'ส่งข้อมูลแล้ว กำลังตรวจสอบใน Google Sheets…';
-    if (!await confirmPrinterWasAdded(previousMatches, values)) throw new Error('ยังไม่พบข้อมูลใหม่ใน Google Sheets กรุณาลองอีกครั้ง');
-    addPrinterMessage.textContent = 'เพิ่มข้อมูลเรียบร้อยแล้ว';
-    await new Promise(resolve => setTimeout(resolve, 450));
+    addPrinterMessage.textContent = 'ส่งข้อมูลเรียบร้อยแล้ว';
+    await new Promise(resolve => setTimeout(resolve, 180));
     closeAddPrinterDialog();
+    void confirmPrinterWasAdded(previousMatches, values).then(confirmed => {
+      if (!confirmed && status) {
+        status.textContent = 'ส่งข้อมูลแล้ว • Google Sheets กำลังอัปเดตในเบื้องหลัง';
+        status.classList.remove('error');
+      }
+    });
   } catch (error) {
     addPrinterMessage.textContent = error.message || 'เพิ่มข้อมูลไม่สำเร็จ กรุณาตรวจการเชื่อมต่อ Google Apps Script'; addPrinterMessage.classList.add('error');
   } finally { saveButton.disabled = false; saveButton.textContent = 'เพิ่มข้อมูล'; }
@@ -102,8 +106,8 @@ function countBy(items, key) { return Object.entries(items.reduce((all, item) =>
 function escapeHtml(value) { return String(value).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char])); }
 function updateHospitalCount(items) { const hospitalCount = items.filter(item => { const assetId = item.asset.trim(); return /\d/.test(assetId) && /^[\d\s./-]+$/.test(assetId); }).length; document.querySelector('#modelStat').textContent = hospitalCount; }
 function render(items) { const valid = items.filter(item => item.model || item.department); const buildings = countBy(valid, 'unit'); const departments = countBy(valid, 'department'); const inks = countBy(valid, 'ink'); const stickerCount = valid.filter(item => item.ink.trim().toLowerCase() === 'sticker').length; const rentalCount = valid.filter(item => item.asset.trim().includes('เช่า')).length; const models = new Set(valid.map(item => item.model).filter(Boolean)); const modelGroups = Object.values(valid.reduce((all, item) => { const model = item.model || 'ไม่ระบุรุ่น'; const ink = item.ink || 'ไม่ระบุ'; const key = `${model}|||${ink}`; if (!all[key]) all[key] = { model, ink, count: 0 }; all[key].count += 1; return all; }, {})).sort((a, b) => b.count - a.count || a.model.localeCompare(b.model)); const colors = ['#19735a','#52a878','#8bcf9f','#b5df7c','#4a8fbe','#8d78b8']; document.querySelector('#totalStat').textContent = valid.length; document.querySelector('#stickerStat').textContent = stickerCount; document.querySelector('#rentalStat').textContent = rentalCount; document.querySelector('#modelStat').textContent = models.size; document.querySelector('#inkTypeStat').textContent = inks.length; document.querySelector('#chartTotal').textContent = valid.length; let offset = 0; document.querySelector('#buildingChart').innerHTML = `<circle class="donut-base" cx="60" cy="60" r="45" pathLength="100"></circle>${buildings.map(([name, count], index) => { const percent = (count / valid.length) * 100; const segment = `<circle class="donut-segment" cx="60" cy="60" r="45" pathLength="100" stroke="${colors[index % colors.length]}" stroke-dasharray="${percent} ${100 - percent}" stroke-dashoffset="-${offset}"><title>${escapeHtml(name)}: ${count} รายการ</title></circle>`; offset += percent; return segment; }).join('')}`; document.querySelector('#buildingLegend').innerHTML = buildings.map(([name, count], index) => `<div class="legend-row"><i style="background:${colors[index % colors.length]}"></i><span>${escapeHtml(name)}</span><strong>${count}</strong></div>`).join(''); const maxInk = inks[0]?.[1] || 1; document.querySelector('#inkList').innerHTML = inks.map(([name, count], index) => `<article class="ink-summary"><div class="ink-summary-top"><span class="ink-rank">${String(index + 1).padStart(2, '0')}</span><span class="ink-name">${escapeHtml(name)}</span><strong>${count}<small> เครื่อง</small></strong></div><div class="ink-meter"><i style="width:${(count / maxInk) * 100}%"></i></div></article>`).join(''); document.querySelector('#departmentList').innerHTML = departments.slice(0, 6).map(([name, count], index) => `<div class="department-row"><span class="department-rank">${index + 1}</span><span>${escapeHtml(name)}</span><strong>${count} <small>รายการ</small></strong></div>`).join(''); document.querySelector('#modelList').innerHTML = modelGroups.map(group => `<tr><td>${escapeHtml(group.model)}</td><td><span class="model-type">${escapeHtml(group.ink)}</span></td><td><strong>${group.count}</strong></td></tr>`).join(''); }
-async function syncGoogleSheet() {
-  setLoading(true);
+async function syncGoogleSheet(showLoading = true) {
+  if (showLoading) setLoading(true);
   try {
     const items = await loadGoogleSheet();
     dashboardItems = items;
@@ -120,7 +124,7 @@ async function syncGoogleSheet() {
       status.classList.add('error');
     }
   } finally {
-    setLoading(false);
+    if (showLoading) setLoading(false);
   }
 }
 
