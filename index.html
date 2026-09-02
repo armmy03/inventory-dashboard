@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,100..900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260901-repair-history1" />
+    <link rel="stylesheet" href="styles.css?v=20260901-fixed-dashboard1" />
   </head>
   <body class="is-loading">
     <main class="page-shell">
@@ -118,33 +118,6 @@
         <div class="edit-actions"><button class="outline-button" id="cancelAddPrinter" type="button">ยกเลิก</button><button id="saveAddPrinter" type="submit">เพิ่มข้อมูล</button></div>
       </form>
     </dialog>
-    <dialog class="edit-dialog repair-dialog" id="repairDialog">
-      <form id="repairForm">
-        <div class="edit-dialog-heading">
-          <div><p class="eyebrow">บันทึกงานซ่อม</p><h2>ข้อมูลการซ่อม</h2></div>
-          <button class="dialog-close" id="closeRepair" type="button" aria-label="ปิด">×</button>
-        </div>
-        <input id="repairRowNumber" type="hidden" />
-        <div class="repair-device-summary" id="repairDeviceSummary" aria-label="รายละเอียดอุปกรณ์ที่เลือก"></div>
-        <div class="edit-grid">
-          <label class="full-field repair-date-field">วันที่แจ้งซ่อม<input id="repairDate" name="repairDate" type="date" required /></label>
-          <label class="full-field">อาการเครื่อง<textarea id="repairSymptom" name="symptom" rows="3" required></textarea></label>
-          <label class="full-field">วิธีการซ่อม<textarea id="repairMethod" name="method" rows="3" required></textarea></label>
-        </div>
-        <p class="edit-message" id="repairMessage" role="status"></p>
-        <div class="edit-actions"><button class="outline-button" id="cancelRepair" type="button">ยกเลิก</button><button id="saveRepair" type="submit">บันทึกการซ่อม</button></div>
-      </form>
-    </dialog>
-    <dialog class="edit-dialog repair-history-dialog" id="repairHistoryDialog">
-      <div class="repair-history-content">
-        <div class="edit-dialog-heading">
-          <div><p class="eyebrow">ข้อมูลย้อนหลัง</p><h2>ประวัติการซ่อม</h2></div>
-          <button class="dialog-close" id="closeRepairHistory" type="button" aria-label="ปิด">×</button>
-        </div>
-        <div class="repair-device-summary" id="repairHistoryDeviceSummary" aria-label="รายละเอียดอุปกรณ์ที่เลือก"></div>
-        <div class="repair-history-list" id="repairHistoryList" aria-live="polite"></div>
-      </div>
-    </dialog>
-  <script src="app.js?v=20260901-repair-history1"></script>
+  <script src="app.js?v=20260901-add-printer1"></script>
   </body>
 </html>

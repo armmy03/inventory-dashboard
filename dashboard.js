@@ -47,6 +47,20 @@ function refreshAddDependentOptions(changed = 'unit') {
   setDatalistOptions('addLocationSuggestions', uniqueValues(detailItems, 'location'));
 }
 function closeAddPrinterDialog() { addPrinterDialog.close(); addPrinterMessage.textContent = ''; addPrinterMessage.classList.remove('error'); }
+function countMatchingPrinters(source, values) {
+  return source.filter(item => columns.every(key => {
+    const expected = String(values[key] || '').trim();
+    return !expected || String(item[key] || '').trim() === expected;
+  })).length;
+}
+async function confirmPrinterWasAdded(previousMatches, values) {
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    await new Promise(resolve => setTimeout(resolve, 1200));
+    await syncGoogleSheet();
+    if (countMatchingPrinters(dashboardItems, values) > previousMatches) return true;
+  }
+  return false;
+}
 document.querySelector('#addUnit').addEventListener('change', () => refreshAddDependentOptions('unit'));
 document.querySelector('#addFloor').addEventListener('change', () => refreshAddDependentOptions('floor'));
 document.querySelector('#addDepartment').addEventListener('change', () => refreshAddDependentOptions('department'));
@@ -58,15 +72,17 @@ addPrinterForm.addEventListener('submit', async event => {
   event.preventDefault();
   const saveButton = document.querySelector('#saveAddPrinter');
   const values = Object.fromEntries(Object.entries(addFieldIds).map(([key, id]) => [key, document.querySelector(`#${id}`).value.trim()]));
+  const previousMatches = countMatchingPrinters(dashboardItems, values);
   saveButton.disabled = true; saveButton.textContent = 'กำลังเพิ่ม…'; addPrinterMessage.classList.remove('error'); addPrinterMessage.textContent = '';
   try {
     await fetch(sheetUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({ action:'add', values }) });
-    addPrinterMessage.textContent = 'เพิ่มข้อมูลแล้ว กำลังโหลดข้อมูลล่าสุด…';
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    await syncGoogleSheet();
+    addPrinterMessage.textContent = 'ส่งข้อมูลแล้ว กำลังตรวจสอบใน Google Sheets…';
+    if (!await confirmPrinterWasAdded(previousMatches, values)) throw new Error('ยังไม่พบข้อมูลใหม่ใน Google Sheets กรุณาลองอีกครั้ง');
+    addPrinterMessage.textContent = 'เพิ่มข้อมูลเรียบร้อยแล้ว';
+    await new Promise(resolve => setTimeout(resolve, 450));
     closeAddPrinterDialog();
-  } catch {
-    addPrinterMessage.textContent = 'เพิ่มข้อมูลไม่สำเร็จ กรุณาตรวจการเชื่อมต่อ Google Apps Script'; addPrinterMessage.classList.add('error');
+  } catch (error) {
+    addPrinterMessage.textContent = error.message || 'เพิ่มข้อมูลไม่สำเร็จ กรุณาตรวจการเชื่อมต่อ Google Apps Script'; addPrinterMessage.classList.add('error');
   } finally { saveButton.disabled = false; saveButton.textContent = 'เพิ่มข้อมูล'; }
 });
 
